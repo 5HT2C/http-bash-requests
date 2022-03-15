@@ -31,3 +31,7 @@ curl https://raw.githubusercontent.com/5HT2C/http-bash-requests/master/http-bash
 # Enable the service and timer for the current user
 systemctl --user enable --now http-bash-requests.timer
 ```
+
+Verify that the service is working like so, and ensure "test" is in the status log:
+
+![](https://raw.githubusercontent.com/5HT2C/http-bash-requests/master/img.png)
