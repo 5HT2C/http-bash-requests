@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs http-bash-requests service
+Wants=http-bash-requests.timer
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/http-bash-requests
+
+[Install]
+WantedBy=multi-user.target

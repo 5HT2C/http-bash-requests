@@ -1,0 +1,11 @@
+[Unit]
+Description=Runs http-bash-requests service
+Requires=http-bash-requests.service
+
+[Timer]
+Unit=http-bash-requests.service
+OnCalendar=*-*-* *:*:00
+OnBootSec=5
+
+[Install]
+WantedBy=timers.target
