@@ -6,6 +6,8 @@ A simple wrapper to make bash (or other shell) commands with http.
 This intentionally has no authentication built in, and only works on localhost. As such, be VERY cautious about giving it elevated permissions.
 This also allows **other users** on your machine to delete your entire home folder (even without elevated permissions), if they would like, among other things.
 
+I do not take any responsibility for the consequences of you running this, or any other, software on any computer.
+
 ## Why?
 
 I wanted a very quick hack to allow my docker containers to reboot themselves.
