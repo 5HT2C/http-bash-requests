@@ -2,7 +2,9 @@
 
 A simple wrapper to make bash (or other shell) commands with http.
 
+**DISCLAIMER:**
 This intentionally has no authentication built in, and only works on localhost. As such, be VERY cautious about giving it elevated permissions.
+This also allows **other users** on your machine to delete your entire home folder (even without elevated permissions), if they would like, among other things.
 
 ## Why?
 
