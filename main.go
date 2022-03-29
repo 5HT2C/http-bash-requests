@@ -23,7 +23,7 @@ func handle(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if out, err := exec.Command(*bin, *binArg, buf.String()).Output(); err != nil {
-		_, _ = fmt.Fprintf(w, err.Error())
+		_, _ = fmt.Fprintf(w, "%s\n", err)
 		log.Printf("err with exec.Command: %s\n", err)
 	} else {
 		_, _ = fmt.Fprintf(w, string(out))
