@@ -59,7 +59,6 @@ func main() {
 	httpBashRequests.Setup(client)
 
 	// Now we can run bash requests over http
-	res, _ := httpBashRequests.Run("ls")
-	log.Println(res)
+	log.Println(httpBashRequests.Run("ls"))
 }
 ```
