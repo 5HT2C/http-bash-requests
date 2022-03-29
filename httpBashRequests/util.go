@@ -10,7 +10,7 @@ var client Client
 
 type Client struct {
 	addr       string
-	httpClient http.Client
+	httpClient *http.Client
 }
 
 // Setup will configure the client to use for Run
