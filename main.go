@@ -16,16 +16,17 @@ var (
 	binArg = flag.String("binArg", "-c", "binary args to use")
 )
 
-func handle(_ http.ResponseWriter, req *http.Request) {
+func handle(w http.ResponseWriter, req *http.Request) {
 	var buf strings.Builder
 	if _, err := io.Copy(&buf, req.Body); err != nil {
 		log.Printf("err with io.Copy: %s\n", err)
 	}
 
 	if out, err := exec.Command(*bin, *binArg, buf.String()).Output(); err != nil {
+		_, _ = fmt.Fprintf(w, err.Error())
 		log.Printf("err with exec.Command: %s\n", err)
-
 	} else {
+		_, _ = fmt.Fprintf(w, string(out))
 		fmt.Printf("%s", out)
 	}
 }
