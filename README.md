@@ -39,3 +39,30 @@ systemctl --user enable --now http-bash-requests.timer
 Verify that the service is working like so, and ensure "test" is in the status log:
 
 ![](https://raw.githubusercontent.com/5HT2C/http-bash-requests/master/img.png)
+
+## Library
+
+Here is a basic example for using the library:
+
+```go
+package main
+
+import (
+	"github.com/5HT2C/http-bash-requests/httpBashRequests"
+	"log"
+	"net/http"
+)
+
+func main() {
+	// Setup only needed once
+	client := httpBashRequests.Client{Addr: "http://localhost:6016", HttpClient: &http.Client{Timeout: 5 * time.Minute}}
+	httpBashRequests.Setup(client)
+
+	// Now we can run bash requests over http
+	res, err := httpBashRequests.Run("ls")
+	if err != nil {
+		log.Println(err.Error())
+    }
+	log.Println(res)
+}
+```
