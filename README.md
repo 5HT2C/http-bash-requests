@@ -56,7 +56,7 @@ import (
 func main() {
 	// Setup only needed once
 	client := httpBashRequests.Client{Addr: "http://localhost:6016", HttpClient: &http.Client{Timeout: 5 * time.Minute}}
-	httpBashRequests.Setup(client)
+	httpBashRequests.Setup(&client)
 
 	// Now we can run bash requests over http
 	log.Println(httpBashRequests.Run("ls"))
