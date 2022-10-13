@@ -2,6 +2,7 @@ package httpBashRequests
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"sync"
@@ -22,11 +23,11 @@ func Setup(clientIn *Client) {
 
 // Run will run a bash command through HBR, and return the result of said command
 func Run(str string) ([]byte, error) {
-	return RunBinary(str, "", "")
+	return RunBinary(str, "", "", false)
 }
 
 // RunBinary will run binPath with binArg through HBR, and return the result of said command
-func RunBinary(str, binPath, binArg string) ([]byte, error) {
+func RunBinary(str, binPath, binArg string, splitBody bool) ([]byte, error) {
 	client.Mutex.Lock()
 	defer client.Mutex.Unlock()
 
@@ -37,6 +38,7 @@ func RunBinary(str, binPath, binArg string) ([]byte, error) {
 
 	req.Header.Set("X-Bin-Path", binPath)
 	req.Header.Set("X-Bin-Arg", binArg)
+	req.Header.Set("X-Body-Split", fmt.Sprintf("%v", splitBody))
 
 	res, err := client.HttpClient.Do(req)
 	if err != nil {
