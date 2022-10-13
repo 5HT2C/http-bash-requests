@@ -8,6 +8,12 @@ This also allows **other users** on your machine to delete your entire home fold
 
 I do not take any responsibility for the consequences of you running this, or any other, software on any computer.
 
+**OTHER DISCLAIMER:**
+This also has the ability to execute *any* executable file on your computer as your current user.
+The `X-Bin-Path` and `X-Bin-Arg` HTTP headers make this possible. This is very dangerous.
+
+I really do not advise you run this on any open machine that isn't a scrappable VM (READ: DO NOT RUN ON A REAL SYSTEM).
+
 ## Why?
 
 I wanted a very quick hack to allow my docker containers to reboot themselves.
