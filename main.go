@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	port   = flag.String("port", "6016", "port to use for serving")
-	bin    = flag.String("bin", "/bin/bash", "binary to run")
-	binArg = flag.String("binArg", "-c", "binary args to use")
+	argPort   = flag.String("port", "6016", "port to use for serving")
+	argBin    = flag.String("bin", "/bin/bash", "binary to run")
+	argBinArg = flag.String("binArg", "-c", "binary args to use")
 )
 
 func handle(w http.ResponseWriter, req *http.Request) {
@@ -22,7 +22,23 @@ func handle(w http.ResponseWriter, req *http.Request) {
 		log.Printf("err with io.Copy: %s\n", err)
 	}
 
-	if out, err := exec.Command(*bin, *binArg, buf.String()).Output(); err != nil {
+	bin := *argBin
+	binArg := *argBinArg
+
+	binPath := req.Header.Get("X-Bin-Path")
+	if len(binPath) > 0 {
+		bin = binPath
+		binArg = req.Header.Get("X-Bin-Arg")
+	}
+
+	args := make([]string, 0)
+	if binArg == "" {
+		args = []string{buf.String()}
+	} else {
+		args = []string{binArg, buf.String()}
+	}
+
+	if out, err := exec.Command(bin, args...).CombinedOutput(); err != nil {
 		_, _ = fmt.Fprintf(w, "%s\n", err)
 		log.Printf("err with exec.Command: %s\n", err)
 	} else {
@@ -35,7 +51,7 @@ func main() {
 	flag.Parse()
 	http.HandleFunc("/", handle)
 
-	if err := http.ListenAndServe("localhost:"+*port, nil); err != nil {
+	if err := http.ListenAndServe("localhost:"+*argPort, nil); err != nil {
 		log.Printf("err with request: %s\n", err)
 	}
 }
