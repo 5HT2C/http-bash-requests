@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
@@ -20,8 +21,10 @@ func handle(w http.ResponseWriter, req *http.Request) {
 	var buf strings.Builder
 	if _, err := io.Copy(&buf, req.Body); err != nil {
 		log.Printf("err with io.Copy: %s\n", err)
+		return
 	}
 
+	body := buf.String()
 	bin := *argBin
 	binArg := *argBinArg
 
@@ -31,11 +34,24 @@ func handle(w http.ResponseWriter, req *http.Request) {
 		binArg = req.Header.Get("X-Bin-Arg")
 	}
 
-	args := make([]string, 0)
-	if binArg == "" {
-		args = []string{buf.String()}
-	} else {
-		args = []string{binArg, buf.String()}
+	args := []string{body}
+
+	if req.Header.Get("X-Body-Split") == "true" {
+		r := csv.NewReader(strings.NewReader(body))
+		r.Comma = ' ' // space
+		fields, err := r.Read()
+
+		if err != nil { // will usually fail if body is empty
+			log.Printf("err with r.Read: %v\n", err)
+			return
+		}
+
+		args = fields
+	}
+
+	// If binArg is not empty, prepend to slice
+	if len(binArg) > 0 {
+		args = append([]string{binArg}, args...)
 	}
 
 	if out, err := exec.Command(bin, args...).CombinedOutput(); err != nil {
