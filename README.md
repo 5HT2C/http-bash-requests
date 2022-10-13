@@ -21,7 +21,7 @@ go run main.go -port 6016
 # Build to dir
 go build -o ~/.local/bin/http-bash-requests .
 
-curl localhost -port 6016 -d "echo test"
+curl localhost:6016 -d "echo test"
 ```
 
 ## Service
