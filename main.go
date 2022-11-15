@@ -55,10 +55,10 @@ func handle(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if out, err := exec.Command(bin, args...).CombinedOutput(); err != nil {
-		_, _ = fmt.Fprintf(w, "%s\n", err)
+		_, _ = fmt.Fprintln(w, err.Error())
 		log.Printf("err with exec.Command: %s\n", err)
 	} else {
-		_, _ = fmt.Fprintf(w, string(out))
+		_, _ = fmt.Fprint(w, string(out))
 		fmt.Printf("%s", out)
 	}
 }
