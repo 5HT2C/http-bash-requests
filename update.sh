@@ -33,3 +33,6 @@ go build -o ~/.local/bin/http-bash-requests .
 # Reload daemon and start service again
 systemctl --user daemon-reload
 systemctl --user enable --now http-bash-requests.timer
+
+# Get status
+systemctl --user status http-bash-requests.service
