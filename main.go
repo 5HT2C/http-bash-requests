@@ -18,6 +18,8 @@ var (
 )
 
 func handle(w http.ResponseWriter, req *http.Request) {
+	log.Printf("r: %v\n", req)
+
 	var buf strings.Builder
 	if _, err := io.Copy(&buf, req.Body); err != nil {
 		log.Printf("err with io.Copy: %s\n", err)
@@ -55,8 +57,12 @@ func handle(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if out, err := exec.Command(bin, args...).CombinedOutput(); err != nil {
-		_, _ = fmt.Fprintln(w, err.Error())
-		log.Printf("err with exec.Command: %s\n", err)
+		outStr := string(out)
+		if len(outStr) > 0 && outStr[len(outStr)-1] != '\n' {
+			outStr = outStr + "\n"
+		}
+		_, _ = fmt.Fprintln(w, outStr+err.Error())
+		fmt.Printf("%s%s", outStr, err)
 	} else {
 		_, _ = fmt.Fprint(w, string(out))
 		fmt.Printf("%s", out)
